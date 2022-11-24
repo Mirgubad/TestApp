@@ -1,0 +1,26 @@
+﻿@using Web.ViewModels.Category;
+@model CategoryCreateVM;
+
+<div class="row">
+    <div class="container ">
+        <div class="col-3 mx-auto">
+            <form method="post">
+                <div class="form-control" >
+                    <label asp-for="Title"></label>
+                    <input class="form-control" asp-for="Title" />
+                    <span class="form-text text-danger " asp-validation-for="Title"></span>
+                </div>
+                <div class="pt-2">
+                    <button class="btn btn-outline-success">Submit</button>
+                    <a class="btn btn-outline-danger" asp-action="index" asp-controller="category">Cancel</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+@section Scripts{
+
+@await Html.PartialAsync("_ValidationScriptsPartial")
+}

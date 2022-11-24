@@ -1,0 +1,63 @@
+﻿@using Web.ViewModels.Product;
+@model ProductIndexViewModel;
+
+
+
+<div class="row">
+    <div class="container">
+        <a class="btn btn-outline-success" asp-action="create" asp-controller="product">Create</a>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Photo</th>                 
+                    <th scope="col">Category</th>                 
+                    <th scope="col">Status</th>                 
+                    <th scope="col">Weight</th>                 
+                    <th scope="col">Quantity</th>                 
+                    <th scope="col">Created At</th>
+                    <th scope="col">Modified At</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model.Products)
+                {
+                    <tr>
+                        <th scope="row">@product.Id</th>
+                        <td>@product.Title</td>
+                        <td>@product.Description</td>
+                        <td>
+                            <img style="width:120px;height:120px;object-fit:cover" class="img-thumbnail" src="~/images/@product.MainPhotoPath" />
+                            </td>
+                        <td>@product.Category.Title</td>
+                        <td>@product.Status</td>
+                        <td>@product.Weight</td>
+                        <td>@product.Quantity</td>
+                        <td>@product.CreatedAt.ToLocalTime().ToUniversalTime()</td>
+                        <td>
+                            @{
+                                if (@product.ModifiedAt.ToLocalTime().ToString() == "01.01.0001 04:00:00")
+                                {
+                                            <span>Non modified</span>
+                                }
+                                else
+                                {
+                                            @product.ModifiedAt.ToLocalTime().ToUniversalTime()
+                                }
+                            }
+                        </td>
+                        <td>
+                            <form method="post">
+                                <a class="btn btn-outline-warning" asp-action="update" asp-controller="product" asp-route-id="@product.Id">Update</a>
+                                <button class="btn btn-outline-danger" asp-action="delete" asp-controller="product" asp-route-id="@product.Id">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+﻿@using Web.ViewModels.Category;
+@model CategoryIndexVM;
+
+<div class="row">
+    <div class="container">
+        <a class="btn btn-outline-success" asp-action="create" asp-controller="category">Create</a>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Created At</th>
+                    <th scope="col">Modified At</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var category in Model.Categories)
+                {
+                    <tr>
+                        <th scope="row">@category.Id</th>
+                        <td>@category.Title</td>
+                        <td>@category.CreatedAt.ToLocalTime().ToUniversalTime()</td>
+                        <td>
+                            @{
+                                if (@category.ModifiedAt.ToLocalTime().ToString() == "01.01.0001 04:00:00")
+                                {
+                                    <span>Non modified</span>
+                                }
+                                else
+                                {
+                                    @category.ModifiedAt.ToLocalTime().ToUniversalTime()
+                                }
+                            }
+                        </td>
+                        <td>
+                            <form method="post">
+                                <a class="btn btn-outline-warning" asp-action="update" asp-controller="category" asp-route-id="@category.Id">Update</a>
+                                <button class="btn btn-outline-danger" asp-action="delete" asp-controller="category" asp-route-id="@category.Id">Delete</button>
+                            </form>
+                           
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

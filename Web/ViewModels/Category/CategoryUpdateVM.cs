@@ -1,0 +1,10 @@
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace Web.ViewModels.Category
+{
+    public class CategoryUpdateVM
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+    }
+}
