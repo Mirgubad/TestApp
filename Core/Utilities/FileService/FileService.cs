@@ -1,18 +1,28 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Core.Extensions.FileService
 {
+
     public class FileService : IFileservice
     {
-        public async Task<string> UploadAsync(IFormFile file, string webrootPath)
+        private readonly IWebHostEnvironment _environment;
+
+        public FileService(IWebHostEnvironment environment)
         {
+            _environment = environment;
+        }
+        
+        public async Task<string> UploadAsync(IFormFile file)
+        {        
             var filename = $"{Guid.NewGuid()}_{file.FileName}";
-            string path = Path.Combine(webrootPath, "images", filename);
+            string path = Path.Combine(_environment.WebRootPath, "images", filename);
             using (FileStream fileStream = new(path, FileMode.Create, FileAccess.ReadWrite))
             {
                 await file.CopyToAsync(fileStream);
@@ -20,9 +30,9 @@ namespace Core.Extensions.FileService
             return filename;
         }
 
-        public void Delete(string webrootPath, string filename)
+        public void Delete(string filename)
         {
-            string path = Path.Combine(webrootPath, "images", filename);
+            string path = Path.Combine(_environment.WebRootPath, "images", filename);
             if (File.Exists(path))
             {
                 File.Delete(path);

@@ -37,6 +37,7 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 #region Repository
 builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductPhotoRepository, ProductPhotoRepository>();
 #endregion
 
 #region Services

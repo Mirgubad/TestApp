@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace Core.Extensions.FileService
 {
     public interface IFileservice
     {
-        Task<string> UploadAsync(IFormFile file, string webrootPath);
-        void Delete(string webrootPath, string filename);
+        Task<string> UploadAsync(IFormFile file);
+        void Delete(string filename);
         bool CheckPhoto(IFormFile file);
         bool MaxSize(IFormFile file, int maxSize);
     }

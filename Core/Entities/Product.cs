@@ -19,7 +19,7 @@ namespace Core.Entities
         public Category Category { get; set; }
         public string Weight { get; set; }
         public ProductStatus Status { get; set; }
-
+        public List<ProductPhoto> ProductPhotos { get; set; }
 
     }
 }

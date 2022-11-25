@@ -1,11 +1,11 @@
 ﻿@using Core.Constants
 @using Web.ViewModels.Product;
-@model ProductCreateVM;
+@model ProductUpdateVM;
 
 <div class="container ">
     <form method="post" enctype="multipart/form-data">
         <div class="row">
-            <div class="col-3">
+            <div class="col-6">
                 <div class="form-control">
                     <label asp-for="Title"></label>
                     <input class="form-control" asp-for="Title" />
@@ -16,7 +16,6 @@
                     <textarea class="form-control" asp-for="Description"></textarea>
                     <span class="form-text text-danger " asp-validation-for="Description"></span>
                 </div>
-
                 <div class="form-control">
                     <label asp-for="Weight"></label>
                     <textarea class="form-control" asp-for="Weight"></textarea>
@@ -28,25 +27,7 @@
                     <span class="form-text text-danger " asp-validation-for="Price"></span>
                 </div>
             </div>
-            <div class="col-3">
-                <div class="form-control">
-                    <label asp-for="MainPhoto"></label>
-                    <input class="form-control" asp-for="MainPhoto" />
-                    <span class="form-text text-danger " asp-validation-for="MainPhoto"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ProductPhotos">Photos</label>
-                    <input class="form-control" asp-for="ProductPhotos">
-                    @{
-                        if (Html.ViewData.ModelState["ProductPhotos"] != null)
-                        {
-                            foreach (var error in Html.ViewData.ModelState["ProductPhotos"].Errors)
-                            {
-                                <p class="text-danger">@error.ErrorMessage</p>
-                            }
-                        }
-                    }
-                </div>
+            <div class="col-6">
                 <div class="form-control">
                     <label asp-for="Quantity"></label>
                     <input class="form-control" asp-for="Quantity" />
@@ -62,7 +43,43 @@
                     <select class="form-control" asp-for="CategoryId" asp-items="Model.Categories"></select>
                     <span class="form-text text-danger " asp-validation-for="CategoryId"></span>
                 </div>
+                <div class="form-control">
+                    <label asp-for="MainPhoto"></label>
+                    <input class="form-control" asp-for="MainPhoto" />
+                    <span class="form-text text-danger " asp-validation-for="MainPhoto"></span>
+                </div>
+                <div class="form-control">
+                    <label asp-for="ProductPhotos"></label>
+                    <input class="form-control" asp-for="ProductPhotos">
+                    @{
+                        if (Html.ViewData.ModelState["ProductPhotos"] != null)
+                        {
+                            foreach (var error in Html.ViewData.ModelState["ProductPhotos"].Errors)
+                            {
+                                <p class="text-danger">@error.ErrorMessage</p>
+                            }
+                        }
+                    }
+                </div>
             </div>
+        </div>
+        <div class="row">
+            @{
+                foreach (var productPhoto in Model.ProductPhotosUpdate)
+                {
+                    <div class="col-6 ">
+                        <form method="post">
+                            <div class="d-flex flex-wrap gap-5 form-control justify-content-center align-items-center mt-2 ">
+                                <img class="img-thumbnail" style="width:100px;height:100px" src="~/images/@productPhoto.Name" />
+                                <span>Order:@productPhoto.Order</span>
+                                <a asp-action="UpdateProductPhoto" asp-controller="product" asp-route-id="@productPhoto.Id" class="btn btn-outline-success">Update</a>
+                                <button class="btn btn-outline-danger" asp-action="deleteproductphoto" asp-controller="product" asp-route-id="@productPhoto.Id">Delete</button>
+                            </div>
+
+                        </form>
+                    </div>
+                }
+            }
 
         </div>
         <div class="pt-2">
