@@ -118,7 +118,7 @@ namespace Web.Services.Concrete
             var productPhoto = await _productPhotoRepository.GetAsync(id);
             if (productPhoto != null)
             {
-               await _productPhotoRepository.DeleteAsync(productPhoto);
+                await _productPhotoRepository.DeleteAsync(productPhoto);
                 return true;
             }
             return false;
@@ -188,8 +188,8 @@ namespace Web.Services.Concrete
             if (productPhoto == null) return null;
             var model = new ProductPhotoUpdateVM
             {
-                Id=productPhoto.Id,
-                Order=productPhoto.Order,
+                Id = productPhoto.Id,
+                Order = productPhoto.Order,
                 ProductId = productPhoto.ProductId,
             };
             return model;
@@ -289,8 +289,9 @@ namespace Web.Services.Concrete
             var productPhoto = await _productPhotoRepository.GetAsync(model.Id);
             if (productPhoto != null)
             {
+                productPhoto.ModifiedAt = DateTime.Now;
                 productPhoto.Order = model.Order;
-                model.ProductId=productPhoto.ProductId;
+                model.ProductId = productPhoto.ProductId;
                 await _productPhotoRepository.UpdateAsync(productPhoto);
                 return true;
             }
