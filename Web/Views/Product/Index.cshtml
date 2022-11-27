@@ -1,4 +1,5 @@
-﻿@using Web.ViewModels.Product;
+﻿@using Core.Constants
+@using Web.ViewModels.Product;
 @model ProductIndexViewModel;
 
 <div class="row">
@@ -24,11 +25,15 @@
                         </td>
                         <td>@product.Category.Title</td>
                         <td>@product.Status</td>
-
                         <td>
                             <form method="post">
-                                <a class="btn btn-outline-warning" asp-action="update" asp-controller="product" asp-route-id="@product.Id">Update</a>
-                                <button class="btn btn-outline-danger" asp-action="delete" asp-controller="product" asp-route-id="@product.Id">Delete</button>
+                                @{
+                                    if (User.IsInRole(UserRoles.Admin.ToString()))
+                                    {
+                                        <a class="btn btn-outline-warning" asp-action="update" asp-controller="product" asp-route-id="@product.Id">Update</a>
+                                        <button class="btn btn-outline-danger" asp-action="delete" asp-controller="product" asp-route-id="@product.Id">Delete</button>
+                                    }
+                                }
                                 <a class="btn btn-outline-info" asp-action="details" asp-controller="product" asp-route-id="@product.Id">Details</a>
                             </form>
                         </td>

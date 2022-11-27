@@ -21,6 +21,6 @@ namespace Web.ViewModels.Product
         public string Weight { get; set; }
         public ProductStatus Status { get; set; }
         public List<IFormFile>? ProductPhotos { get; set; }
-        public List<ProductPhoto> ProductPhotosUpdate { get; set; }
+        public List<ProductPhoto>? ProductPhotosUpdate { get; set; }
     }
 }

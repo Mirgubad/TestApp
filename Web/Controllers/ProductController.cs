@@ -1,4 +1,5 @@
 ﻿using Core.Extensions.FileService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
@@ -40,26 +41,30 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ProductCreateVM model)
         {
-            var succeded = await _productService.CreateAsync(model);
-            if (!succeded) return View(model);
-            return RedirectToAction(nameof(Index));
+            var isSucceded = await _productService.CreateAsync(model);
+            if (isSucceded) return RedirectToAction(nameof(Index));
+            return View(model);
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id)
         {
             var model = await _productService.GetUpdateModelAsync(id);
             return View(model);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id, ProductUpdateVM model)
         {
             if (model.Id != id) return BadRequest();
             bool isSucceded = await _productService.UpdateAsync(model);
-            if (!isSucceded) return View(model);
-            return RedirectToAction(nameof(Index));
+            if (isSucceded) return RedirectToAction(nameof(Index));
+            return View(model);
+
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateProductPhoto(int id)
         {
             var model = await _productService.GetProductPhoto(id);
@@ -67,16 +72,19 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateProductPhoto(int id ,ProductPhotoUpdateVM model)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateProductPhoto(int id, ProductPhotoUpdateVM model)
         {
             if (model.Id != id) return BadRequest();
             bool isSucceded = await _productService.UpdateProductPhotoAsync(model);
-            if (!isSucceded) return View(model);
-            return RedirectToAction("update", "product", new {id=model.ProductId});
+            if (isSucceded) return RedirectToAction("update", "product", new { id = model.ProductId });
+            return View(model);
+
         }
 
-       
+
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             await _productService.DeleteAsync(id);
@@ -84,12 +92,12 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteProductPhoto(int id)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteProductPhoto(ProductPhotoDeleteVM model)
         {
-            var productPhoto = await _productService.GetProductPhoto(id);
-            var isSucceded = await _productService.DeleteProductPhotoAsync(id);          
-            if (!isSucceded) return BadRequest();
-            return RedirectToAction("update", "product", new { id = productPhoto.ProductId });
+            var isSucceded = await _productService.DeleteProductPhotoAsync(model);
+            if (isSucceded) return RedirectToAction("update", "product", new { id = model.ProductId });
+            return NotFound();
         }
 
 

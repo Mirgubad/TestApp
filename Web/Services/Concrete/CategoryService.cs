@@ -1,5 +1,7 @@
 ﻿using Core.Entities;
 using DataAccess.Repositories.Abstract;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Web.Services.Abstract;
 using Web.ViewModels.Category;
@@ -9,10 +11,12 @@ namespace Web.Services.Concrete
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _categoryRepository;
+        private readonly ModelStateDictionary _modelState;
 
-        public CategoryService(ICategoryRepository categoryRepository)
+        public CategoryService(ICategoryRepository categoryRepository, IActionContextAccessor actionContextAccessor)
         {
             _categoryRepository = categoryRepository;
+            _modelState = actionContextAccessor.ActionContext.ModelState;
         }
 
 
@@ -27,14 +31,22 @@ namespace Web.Services.Concrete
             };
             return model;
         }
-        public async Task CreateAsync(CategoryCreateVM model)
+        public async Task<bool> CreateAsync(CategoryCreateVM model)
         {
+            if (!_modelState.IsValid) return false;
+            bool isExist = await _categoryRepository.AnyAsync(c => c.Title.Trim().ToLower() == model.Title.ToLower());
+            if (isExist)
+            {
+                _modelState.AddModelError("Title", "This category already created");
+                return false;
+            }
             var category = new Category
             {
                 Title = model.Title,
                 CreatedAt = DateTime.Now,
             };
             await _categoryRepository.CreateAsync(category);
+            return true;
         }
 
         public async Task<CategoryIndexVM> GetAllAsync()
@@ -46,8 +58,16 @@ namespace Web.Services.Concrete
             return model;
         }
 
-        public async Task UpdateAsync(CategoryUpdateVM model)
+        public async Task<bool> UpdateAsync(CategoryUpdateVM model)
         {
+            if (!_modelState.IsValid) return false;
+
+            var isExist = await _categoryRepository.AnyAsync(c => c.Title.Trim().ToLower() == model.Title.Trim().ToLower() && model.Id != c.Id); ;
+            if (isExist)
+            {
+                _modelState.AddModelError("Title", "This category already created");
+                return false;
+            }
             var category = await _categoryRepository.GetAsync(model.Id);
             if (category != null)
             {
@@ -55,6 +75,8 @@ namespace Web.Services.Concrete
                 category.ModifiedAt = DateTime.Now;
                 await _categoryRepository.UpdateAsync(category);
             }
+
+            return true;
         }
 
         public async Task DeleteAsync(int id)
@@ -63,6 +85,6 @@ namespace Web.Services.Concrete
             if (category != null) await _categoryRepository.DeleteAsync(category);
         }
 
-       
+
     }
 }

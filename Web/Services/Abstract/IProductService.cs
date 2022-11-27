@@ -14,7 +14,7 @@ namespace Web.Services.Abstract
         Task<ProductPhotoUpdateVM> GetProductPhoto(int id);
         Task<bool> UpdateAsync(ProductUpdateVM model);
         Task<bool> UpdateProductPhotoAsync(ProductPhotoUpdateVM model);
-        Task<bool> DeleteProductPhotoAsync(int id);
+        Task<bool> DeleteProductPhotoAsync(ProductPhotoDeleteVM model);
         Task DeleteAsync(int id);
         Task<ProductDetailsVM> GetDetailsAsync(int id);
         Task<List<SelectListItem>> GetCategorySelectListAsync();

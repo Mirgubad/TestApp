@@ -113,11 +113,12 @@ namespace Web.Services.Concrete
             }
         }
 
-        public async Task<bool> DeleteProductPhotoAsync(int id)
+        public async Task<bool> DeleteProductPhotoAsync(ProductPhotoDeleteVM model)
         {
-            var productPhoto = await _productPhotoRepository.GetAsync(id);
+            var productPhoto = await _productPhotoRepository.GetAsync(model.Id);
             if (productPhoto != null)
             {
+                model.ProductId = productPhoto.ProductId;
                 await _productPhotoRepository.DeleteAsync(productPhoto);
                 return true;
             }
@@ -201,6 +202,7 @@ namespace Web.Services.Concrete
             if (product == null) return null;
             var model = new ProductUpdateVM
             {
+                Id = product.Id,
                 Description = product.Description,
                 Status = product.Status,
                 CategoryId = product.CategoryId,
@@ -217,8 +219,16 @@ namespace Web.Services.Concrete
         public async Task<bool> UpdateAsync(ProductUpdateVM model)
         {
             var product = await _productRepository.GetAsync(model.Id);
+            model.Categories = await GetCategorySelectListAsync();
+            model.ProductPhotosUpdate = await _productPhotoRepository.GetProductPhotoAsync(product.Id);
             if (!_modelState.IsValid)
             {
+                return false;
+            }
+            bool isExist = await _productRepository.AnyAsync(p => p.Title.Trim().ToLower() == model.Title.Trim().ToLower() && model.Id != p.Id);
+            if (isExist)
+            {
+                _modelState.AddModelError("Title", "This product already created");
                 return false;
             }
             if (product != null)
@@ -231,7 +241,6 @@ namespace Web.Services.Concrete
                 product.Quantity = model.Quantity;
                 product.ModifiedAt = DateTime.Now;
                 product.Description = model.Description;
-                model.Categories = await GetCategorySelectListAsync();
                 await _productRepository.UpdateAsync(product);
             }
             int maxSize = 1000;

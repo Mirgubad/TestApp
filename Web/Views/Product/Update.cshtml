@@ -63,30 +63,31 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            @{
-                foreach (var productPhoto in Model.ProductPhotosUpdate)
-                {
-                    <div class="col-6 ">
-                        <form method="post">
-                            <div class="d-flex flex-wrap gap-5 form-control justify-content-center align-items-center mt-2 ">
-                                <img class="img-thumbnail" style="width:100px;height:100px" src="~/images/@productPhoto.Name" />
-                                <span>Order:@productPhoto.Order</span>
-                                <a asp-action="UpdateProductPhoto" asp-controller="product" asp-route-id="@productPhoto.Id" class="btn btn-outline-success">Update</a>
-                                <button class="btn btn-outline-danger" asp-action="deleteproductphoto" asp-controller="product" asp-route-id="@productPhoto.Id">Delete</button>
-                            </div>
-
-                        </form>
-                    </div>
-                }
-            }
-
-        </div>
+       
         <div class="pt-2">
-            <button class="btn btn-outline-success">Submit</button>
+            <button type="submit" class="btn btn-outline-success" asp-action="update" asp-controller="product" asp-route-id="@Model.Id">Update</button>
             <a class="btn btn-outline-danger" asp-action="index" asp-controller="product">Cancel</a>
         </div>
     </form>
+    <div class="row">
+        @{
+            foreach (var productPhoto in Model.ProductPhotosUpdate)
+            {
+                <div class="col-6 ">
+                    <form method="post">
+                        <div class="d-flex flex-wrap gap-5 form-control justify-content-center align-items-center mt-2 ">
+                            <img class="img-thumbnail" style="width:100px;height:100px" src="~/images/@productPhoto.Name" />
+                            <span>Order:@productPhoto.Order</span>
+                            <a asp-action="UpdateProductPhoto" asp-controller="product" asp-route-id="@productPhoto.Id" class="btn btn-outline-success">Update</a>
+                            <button class="btn btn-outline-danger" asp-action="deleteproductphoto" asp-controller="product" asp-route-id="@productPhoto.Id">Delete</button>
+                        </div>
+
+                    </form>
+                </div>
+            }
+        }
+
+    </div>
 </div>
 
 @section Scripts{

@@ -26,9 +26,10 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CategoryCreateVM model)
         {
-            if (!ModelState.IsValid) return View(model);
-            await _categoryService.CreateAsync(model);
-            return RedirectToAction(nameof(Index));
+            var isSucceded = await _categoryService.CreateAsync(model);
+            if (isSucceded) return RedirectToAction(nameof(Index));
+            return View(model);
+
         }
 
         public async Task<IActionResult> Update(int id)
@@ -41,10 +42,10 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(int id, CategoryUpdateVM model)
         {
-            if (!ModelState.IsValid) return View(model);
             if (id != model.Id) return NotFound();
-            await _categoryService.UpdateAsync(model);
-            return RedirectToAction(nameof(Index));
+            bool isSucceded = await _categoryService.UpdateAsync(model);
+            if(isSucceded) return RedirectToAction(nameof(Index));
+            return View(model);
         }
 
         [HttpPost]

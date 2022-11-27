@@ -5,10 +5,10 @@ namespace Web.Services.Abstract
 {
     public interface ICategoryService
     {
-        Task CreateAsync(CategoryCreateVM model);
+        Task<bool> CreateAsync(CategoryCreateVM model);
         Task<CategoryUpdateVM> GetUpdateModelAsync(int id);
         Task<CategoryIndexVM> GetAllAsync();
-        Task UpdateAsync(CategoryUpdateVM model);
+        Task<bool> UpdateAsync(CategoryUpdateVM model);
         Task DeleteAsync(int id);
     }
 }
