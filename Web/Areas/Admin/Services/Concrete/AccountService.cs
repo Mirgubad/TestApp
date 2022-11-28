@@ -8,12 +8,12 @@ using Web.Areas.Admin.ViewModels;
 
 namespace Web.Areas.Admin.Services.Concrete
 {
-    public class AdminAccountService : IAdminAccountService
+    public class AccountService : IAccountService
     {
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly ModelStateDictionary _modelState;
-        public AdminAccountService(SignInManager<User> signInManager,
+        public AccountService(SignInManager<User> signInManager,
           UserManager<User> userManager, IActionContextAccessor actionContextAccessor
           )
         {

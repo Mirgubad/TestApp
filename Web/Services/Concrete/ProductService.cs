@@ -103,7 +103,6 @@ namespace Web.Services.Concrete
             }
             return true;
         }
-
         public async Task DeleteAsync(int id)
         {
             var product = await _productRepository.GetAsync(id);
@@ -112,7 +111,6 @@ namespace Web.Services.Concrete
                 await _productRepository.DeleteAsync(product);
             }
         }
-
         public async Task<bool> DeleteProductPhotoAsync(ProductPhotoDeleteVM model)
         {
             var productPhoto = await _productPhotoRepository.GetAsync(model.Id);
@@ -124,7 +122,6 @@ namespace Web.Services.Concrete
             }
             return false;
         }
-
         public async Task<ProductIndexViewModel> GetAllAsync()
         {
             var model = new ProductIndexViewModel
@@ -133,7 +130,6 @@ namespace Web.Services.Concrete
             };
             return model;
         }
-
         public async Task<ProductCreateVM> GetCategoryCreateModelAsync()
         {
             var categories = await _categoryRepository.GetAllAsync();
@@ -147,7 +143,6 @@ namespace Web.Services.Concrete
             };
             return model;
         }
-
         public async Task<List<SelectListItem>> GetCategorySelectListAsync()
         {
             var category = await _categoryRepository.GetAllAsync();
@@ -157,7 +152,6 @@ namespace Web.Services.Concrete
                 Text = c.Title
             }).ToList();
         }
-
         public async Task<ProductDetailsVM> GetDetailsAsync(int id)
         {
             var dbproduct = await _productRepository.GetAsync(id);
@@ -182,7 +176,6 @@ namespace Web.Services.Concrete
             };
             return model;
         }
-
         public async Task<ProductPhotoUpdateVM> GetProductPhoto(int id)
         {
             var productPhoto = await _productPhotoRepository.GetAsync(id);
@@ -195,7 +188,6 @@ namespace Web.Services.Concrete
             };
             return model;
         }
-
         public async Task<ProductUpdateVM> GetUpdateModelAsync(int id)
         {
             var product = await _productRepository.GetAsync(id);
@@ -215,7 +207,6 @@ namespace Web.Services.Concrete
             };
             return model;
         }
-
         public async Task<bool> UpdateAsync(ProductUpdateVM model)
         {
             var product = await _productRepository.GetAsync(model.Id);
@@ -270,29 +261,35 @@ namespace Web.Services.Concrete
                     {
                         _modelState.AddModelError("ProductPhotos", $"{productPhoto.FileName} file type must be image");
                         hasError = true;
+
                     }
                     else if (!_fileservice.MaxSize(productPhoto, maxSize))
                     {
                         _modelState.AddModelError("ProductPhotos", $"File size must be less than{maxSize}");
                         hasError = true;
+
                     }
+                  
+                }
+            
+                if (hasError)
+                {
+                    return false;
+                }
+                foreach (var checkedproductPhoto in model.ProductPhotos)
+                {
                     var producPhotoUpdate = new ProductPhoto
                     {
                         CreatedAt = DateTime.Now,
-                        Name = await _fileservice.UploadAsync(productPhoto),
+                        Name = await _fileservice.UploadAsync(checkedproductPhoto),
                         ProductId = product.Id,
                         Order = order++,
                     };
                     await _productPhotoRepository.CreateAsync(producPhotoUpdate);
                 }
-                if (hasError)
-                {
-                    return false;
-                }
             }
             return true;
         }
-
         public async Task<bool> UpdateProductPhotoAsync(ProductPhotoUpdateVM model)
         {
             var productPhoto = await _productPhotoRepository.GetAsync(model.Id);

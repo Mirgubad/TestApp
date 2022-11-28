@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Web.Areas.Admin.Services.Abstract;
-using Web.Areas.Admin.Services.Concrete;
+using AdminAbstractService= Web.Areas.Admin.Services.Abstract;
+using AdminConcreteService= Web.Areas.Admin.Services.Concrete;
 using Web.Services.Abstract;
 using Web.Services.Concrete;
 
@@ -48,7 +48,7 @@ builder.Services.AddScoped<IProductPhotoRepository, ProductPhotoRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
-builder.Services.AddScoped<IAdminAccountService, AdminAccountService>();
+builder.Services.AddScoped<AdminAbstractService.IAccountService, AdminConcreteService.AccountService>();
 #endregion
 
 

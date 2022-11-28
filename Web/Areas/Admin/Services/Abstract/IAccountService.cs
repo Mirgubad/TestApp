@@ -2,7 +2,7 @@
 
 namespace Web.Areas.Admin.Services.Abstract
 {
-    public interface IAdminAccountService
+    public interface IAccountService
     {
         Task<bool> LoginAsync(AccountLoginVM model);
         Task LogOutAsync();

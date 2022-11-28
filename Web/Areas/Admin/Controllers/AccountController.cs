@@ -11,9 +11,9 @@ namespace Web.Areas.Admin.Controllers
 
     public class AccountController : Controller
     {
-        private readonly IAdminAccountService _accountService;
+        private readonly IAccountService _accountService;
 
-        public AccountController(IAdminAccountService accountService)
+        public AccountController(IAccountService accountService)
         {
             _accountService = accountService;
         }
