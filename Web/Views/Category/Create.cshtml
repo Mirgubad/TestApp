@@ -5,10 +5,15 @@
     <div class="container ">
         <div class="col-3 mx-auto">
             <form method="post">
-                <div class="form-control" >
+                <div class="form-control">
                     <label asp-for="Title"></label>
                     <input class="form-control" asp-for="Title" />
                     <span class="form-text text-danger " asp-validation-for="Title"></span>
+                </div>
+                <div class="form-control">
+                    <label asp-for="TagsIds"></label>
+                    <select multiple class="select" asp-for="TagsIds" asp-items="Model.Tags"></select>
+                    <span class="form-text text-danger " asp-validation-for="TagsIds"></span>
                 </div>
                 <div class="pt-2">
                     <button class="btn btn-outline-success">Submit</button>
@@ -20,7 +25,15 @@
     </div>
 
 </div>
-@section Scripts{
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
 
-@await Html.PartialAsync("_ValidationScriptsPartial")
+@section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+    <script>
+        $('select').selectpicker();
+    </script>
 }

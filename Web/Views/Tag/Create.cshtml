@@ -1,5 +1,5 @@
-﻿@using Web.ViewModels.Category;
-@model CategoryUpdateVM;
+﻿@using Web.ViewModels.Tag;
+@model TagCreateVM;
 
 <div class="row">
     <div class="container ">
@@ -11,14 +11,15 @@
                     <span class="form-text text-danger " asp-validation-for="Title"></span>
                 </div>
                 <div class="form-control">
-                    <label asp-for="TagsIds"></label>
-                    <select multiple class="select" asp-for="TagsIds" asp-items="Model.Tags"></select>
-                    <span class="form-text text-danger " asp-validation-for="TagsIds"></span>
+                    <label asp-for="CategoriesIds"></label>
+                    <select multiple class="select" asp-for="CategoriesIds" asp-items="Model.Categories"></select>
+                    <span class="form-text text-danger " asp-validation-for="CategoriesIds"></span>
                 </div>
                 <div class="pt-2">
-                    <button class="btn btn-outline-success">Update</button>
-                    <a asp-action="index" asp-controller="category" class="btn btn-outline-danger">Cancel</a>
+                    <button class="btn btn-outline-success">Submit</button>
+                    <a class="btn btn-outline-danger" asp-action="index" asp-controller="tag">Cancel</a>
                 </div>
+
             </form>
         </div>
     </div>
@@ -36,3 +37,4 @@
         $('select').selectpicker();
     </script>
 }
+

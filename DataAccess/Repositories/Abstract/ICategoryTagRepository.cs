@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories.Abstract
 {
-    public interface ICategoryRepository:IRepository<Category>
+    public interface ICategoryTagRepository : IRepository<CategoryTag>
     {
-        Task<List<Category>> GetAllWithTag();
+        Task<List<CategoryTag>> GetAllAsync(int id);
 
     }
 }

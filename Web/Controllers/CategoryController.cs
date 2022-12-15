@@ -14,13 +14,14 @@ namespace Web.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var model = await _categoryService.GetAllAsync();
+            var model = await _categoryService.GetAllWithTag();
             return View(model);
         }
 
         public async Task<IActionResult> Create()
         {
-            return View();
+            var model = await _categoryService.GetCreateModelAsync();
+            return View(model);
         }
 
         [HttpPost]
@@ -28,6 +29,7 @@ namespace Web.Controllers
         {
             var isSucceded = await _categoryService.CreateAsync(model);
             if (isSucceded) return RedirectToAction(nameof(Index));
+            model = await _categoryService.GetCreateModelAsync();
             return View(model);
 
         }
@@ -44,7 +46,8 @@ namespace Web.Controllers
         {
             if (id != model.Id) return NotFound();
             bool isSucceded = await _categoryService.UpdateAsync(model);
-            if(isSucceded) return RedirectToAction(nameof(Index));
+            if (isSucceded) return RedirectToAction(nameof(Index));
+            model = await _categoryService.GetUpdateModelAsync(id);
             return View(model);
         }
 

@@ -1,17 +1,16 @@
 using Core.Entities;
 using Core.Extensions.FileService;
-using Core.Utilities;
 using DataAccess.Contexts;
 using DataAccess.Repositories.Abstract;
 using DataAccess.Repositories.Concrete;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using AdminAbstractService= Web.Areas.Admin.Services.Abstract;
-using AdminConcreteService= Web.Areas.Admin.Services.Concrete;
+using AdminAbstractService = Web.Areas.Admin.Services.Abstract;
+using AdminConcreteService = Web.Areas.Admin.Services.Concrete;
 using Web.Services.Abstract;
 using Web.Services.Concrete;
+using DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,9 +37,11 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 }).AddEntityFrameworkStores<AppDbContext>();
 
 #region Repository
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductPhotoRepository, ProductPhotoRepository>();
+builder.Services.AddScoped<ITagRepository, TagRepository>();
+builder.Services.AddScoped<ICategoryTagRepository, CategoryTagRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 #endregion
 
@@ -48,6 +49,7 @@ builder.Services.AddScoped<IProductPhotoRepository, ProductPhotoRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddScoped<AdminAbstractService.IAccountService, AdminConcreteService.AccountService>();
 #endregion
 
@@ -66,7 +68,6 @@ using (var scope = scopeFactory.CreateScope())
     var roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
 
     await DbInitialize.SeedAsync(userManager, roleManager);
-
 }
 
 // Configure the HTTP request pipeline.

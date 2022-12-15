@@ -1,34 +1,34 @@
-﻿@using Web.ViewModels.Category;
-@model CategoryIndexVM;
+﻿@using Web.ViewModels.Tag;
+@model TagIndexVM;
+
 
 <div class="row">
     <div class="container">
-        <a class="btn btn-outline-success" asp-action="create" asp-controller="category">Create</a>
+        <a class="btn btn-outline-success" asp-action="create" asp-controller="tag">Create</a>
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th scope="col">Id</th>
                     <th scope="col">Title</th>
-                    <th scope="col">Tags</th>
+                    <th scope="col">Category</th>
                     <th scope="col">Created At</th>
                     <th scope="col">Modified At</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var category in Model.Categories)
+                @foreach (var tag in Model.Tags)
                 {
-
                     <tr>
-                        <th scope="row">@category.Id</th>
-                        <td>@category.Title</td>
+                        <th scope="row">@tag.Id</th>
+                        <td>@tag.Title</td>
                         <td>
                             @{
                                 List<string> listRows = new List<string>();
                                 string rowValues = string.Empty;
-                                foreach (var tag in category.CategoriesTags)
+                                foreach (var categoryTag in tag.CategoriesTags)
                                 {
-                                    listRows.Add(tag.Tag.Title);
+                                    listRows.Add(categoryTag.Category.Title);
                                     rowValues = string.Join(",", listRows);
                                 }
                                 foreach (var item in rowValues)
@@ -37,23 +37,23 @@
                                 }
                             }
                         </td>
-                        <td>@category.CreatedAt.ToLocalTime().ToUniversalTime()</td>
+                        <td>@tag.CreatedAt.ToLocalTime().ToUniversalTime()</td>
                         <td>
                             @{
-                                if (@category.ModifiedAt.ToLocalTime().ToString() == "01.01.0001 04:00:00")
+                                if (@tag.ModifiedAt.ToLocalTime().ToString() == "01.01.0001 04:00:00")
                                 {
                                     <span>Non modified</span>
                                 }
                                 else
                                 {
-                                    @category.ModifiedAt.ToLocalTime().ToUniversalTime()
+                                    @tag.ModifiedAt.ToLocalTime().ToUniversalTime()
                                 }
                             }
                         </td>
                         <td>
                             <form method="post">
-                                <a class="btn btn-outline-warning" asp-action="update" asp-controller="category" asp-route-id="@category.Id">Update</a>
-                                <button class="btn btn-outline-danger" asp-action="delete" asp-controller="category" asp-route-id="@category.Id">Delete</button>
+                                <a class="btn btn-outline-warning" asp-action="update" asp-controller="tag" asp-route-id="@tag.Id">Update</a>
+                                <button class="btn btn-outline-danger" asp-action="delete" asp-controller="tag" asp-route-id="@tag.Id">Delete</button>
                             </form>
 
                         </td>

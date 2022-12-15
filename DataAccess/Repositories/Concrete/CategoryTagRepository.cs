@@ -10,20 +10,19 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories.Concrete
 {
-    public class CategoryRepository : Repository<Category>, ICategoryRepository
+    public class CategoryTagRepository : Repository<CategoryTag>, ICategoryTagRepository
     {
         private readonly AppDbContext _context;
 
-        public CategoryRepository(AppDbContext context) : base(context)
+        public CategoryTagRepository(AppDbContext context) : base(context)
         {
             _context = context;
         }
 
-        public async Task<List<Category>> GetAllWithTag()
+        public async Task<List<CategoryTag>> GetAllAsync(int id)
         {
-            var category = await _context.Categories.Include(ct => ct.CategoriesTags).ThenInclude(t => t.Tag).ToListAsync();
-            return category;
-
+            var categoryTag = await _context.CategoriesTags.Where(ct => ct.CategoryId == id).ToListAsync();
+            return categoryTag;
         }
     }
 }
